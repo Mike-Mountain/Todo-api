@@ -24,14 +24,11 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This api was built with [Nest](https://github.com/nestjs/nest).
 
 ## Installation
-
-```bash
-$ npm install
-```
-
+* Clone the repository and run `npm install` to install dependencies.
+* Create a mysql database locally called `todo`.
 ## Running the app
 
 ```bash
@@ -39,7 +36,7 @@ $ npm install
 $ npm run start
 
 # watch mode
-$ npm run start:dev
+$ npm run dev
 
 # production mode
 $ npm run start:prod
