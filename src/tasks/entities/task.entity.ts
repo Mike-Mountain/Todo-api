@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { TaskPriority, TaskStatus } from '../enums/task.enum';
+import { UserEntity } from '../../users/entity/user.entity';
 
 @Entity()
 export class Task {
@@ -17,4 +18,7 @@ export class Task {
 
   @Column({ default: TaskStatus.TODO })
   status: TaskStatus;
+
+  @ManyToOne((type) => UserEntity)
+  ownerId?: number;
 }

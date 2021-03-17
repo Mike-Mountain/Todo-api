@@ -4,6 +4,7 @@ import { UpdateTaskDto } from '../dto/update-task.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Task } from '../entities/task.entity';
+import { UserEntity } from '../../users/entity/user.entity';
 
 @Injectable()
 export class TasksService {
@@ -12,36 +13,27 @@ export class TasksService {
     private taskRepository: Repository<Task>,
   ) {}
 
-  create(createTaskDto: CreateTaskDto): Promise<Task | Error> {
-    return this.taskRepository.save(createTaskDto).catch((err) => {
-      return new Error(err);
+  async create(createTaskDto: CreateTaskDto, user: UserEntity): Promise<Task> {
+    const task = new CreateTaskDto(createTaskDto, user);
+    const taskEntity = this.taskRepository.create(task);
+    return await this.taskRepository.save(taskEntity);
+  }
+
+  async findAll(user: UserEntity): Promise<Task[]> {
+    return await this.taskRepository.find({
+      where: { ownerId: user.id },
     });
   }
 
-  findAll(): Promise<Task[] | Error> {
-    return this.taskRepository.find().catch((err) => {
-      return new Error(err);
-    });
+  findOne(id: number): Promise<Task> {
+    return this.taskRepository.findOne(id);
   }
 
-  findOne(id: number): Promise<Task | Error> {
-    return this.taskRepository.findOne(id).catch((err) => {
-      return new Error(err);
-    });
+  update(id: number, updateTaskDto: UpdateTaskDto): Promise<UpdateResult> {
+    return this.taskRepository.update(id, updateTaskDto);
   }
 
-  update(
-    id: number,
-    updateTaskDto: UpdateTaskDto,
-  ): Promise<UpdateResult | Error> {
-    return this.taskRepository.update(id, updateTaskDto).catch((err) => {
-      return new Error(err);
-    });
-  }
-
-  remove(id: number): Promise<DeleteResult | Error> {
-    return this.taskRepository.delete(id).catch((err) => {
-      return new Error(err);
-    });
+  remove(id: number): Promise<DeleteResult> {
+    return this.taskRepository.delete(id);
   }
 }
