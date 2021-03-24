@@ -15,7 +15,7 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: '' })
   address: string;
 
   @BeforeInsert()

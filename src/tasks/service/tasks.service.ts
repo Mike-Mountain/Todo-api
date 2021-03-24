@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateTaskDto } from '../dto/create-task.dto';
 import { UpdateTaskDto } from '../dto/update-task.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { Task } from '../entities/task.entity';
 import { UserEntity } from '../../users/entity/user.entity';
 
@@ -29,8 +29,11 @@ export class TasksService {
     return this.taskRepository.findOne(id);
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto): Promise<UpdateResult> {
-    return this.taskRepository.update(id, updateTaskDto);
+  async update(id: number, updateTaskDto: UpdateTaskDto): Promise<Task> {
+    const updated = await this.taskRepository.update(id, updateTaskDto);
+    if (updated) {
+      return updateTaskDto;
+    }
   }
 
   remove(id: number): Promise<DeleteResult> {

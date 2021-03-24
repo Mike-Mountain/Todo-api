@@ -9,3 +9,9 @@ export enum TaskStatus {
   INPROGRESS = 'in progress',
   COMPLETE = 'complete',
 }
+
+export enum TaskCategory {
+  PERSONAL = 'personal',
+  WORK = 'work',
+  HOME = 'home',
+}

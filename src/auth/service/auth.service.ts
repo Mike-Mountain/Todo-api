@@ -14,6 +14,9 @@ export class AuthService {
 
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.userService.findOne({ where: { username } });
+    if (!user) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
     const isEqual = compare(user.password, password);
     if (!isEqual) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
@@ -28,7 +31,7 @@ export class AuthService {
     });
     const { password, hashPassword, ...redactedUser } = payload;
     return {
-      accessToken: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(redactedUser),
     };
   }
 

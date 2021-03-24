@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { TaskPriority, TaskStatus } from '../enums/task.enum';
+import { TaskCategory, TaskPriority, TaskStatus } from '../enums/task.enum';
 import { UserEntity } from '../../users/entity/user.entity';
 
 @Entity()
@@ -12,6 +12,9 @@ export class Task {
 
   @Column()
   description: string;
+
+  @Column({ default: '' })
+  category: TaskCategory;
 
   @Column()
   priority: TaskPriority;
